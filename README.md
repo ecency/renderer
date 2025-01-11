@@ -4,7 +4,7 @@ This repository accompanies the blog entry [Publishing a React component to npm 
 
 This is a scaffold application for building a React library/component using Vite, that can be published to npm.
 
-Feel free to clone this repository. Simply replace all instances of `react-library-vite` in `/package.json` and in `/vite.config.js` with the name of your npm package.
+Feel free to clone this repository. Simply replace all instances of `react-library-vite` in `/package.json` and in `/vite.config.ts` with the name of your npm package.
 
 Replace `version`, `description` and `author` in `/package.json`.
 
