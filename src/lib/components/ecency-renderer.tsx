@@ -1,7 +1,9 @@
+"use server";
+
 import React, { HTMLProps } from "react";
 import { renderPostBody } from "@ecency/render-helper";
 import { clsx } from "clsx";
-import { ImageZoomExtension } from "./extensions";
+import { HivePostLinkExtension, ImageZoomExtension } from "./extensions";
 
 interface Props {
   value: string;
@@ -28,6 +30,7 @@ export function EcencyRenderer({
       {!pure && (
         <>
           <ImageZoomExtension />
+          <HivePostLinkExtension />
         </>
       )}
     </>

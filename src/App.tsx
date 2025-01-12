@@ -6,7 +6,7 @@ export function App() {
   const demo = [
     [
       "Hive post",
-      "Hello world!\n\nhttps://ecency.com/hive/@demo.com/test-post-99405e0b7961e",
+      "Hello world!\n\nhttps://ecency.com/hive-125125/@ecency/ecency-year-in-rewiew-2024",
     ],
     [
       "Zoom image",

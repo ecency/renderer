@@ -7,20 +7,24 @@ import { nodePolyfills } from "vite-plugin-node-polyfills";
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
+    minify: false,
     lib: {
       entry: path.resolve(__dirname, "src/lib/index.ts"),
       name: "Ecency Renderer",
+      formats: ["es"],
       fileName: (format) => `ecency-renderer.${format}.js`,
     },
     rollupOptions: {
-      external: ["react", "react-dom", "clsx"],
-      output: {
-        // Provide global variables to use in the UMD build
-        // for externalized deps
-        globals: {
-          react: "React",
-        },
-      },
+      external: [
+        "react",
+        "react-dom",
+        "react-dom/client",
+        "scheduler",
+        "clsx",
+        "@ecency/render-helper",
+        "medium-zoom",
+        "react/jsx-runtime",
+      ],
     },
   },
   plugins: [react(), dtsPlugin({ rollupTypes: true }), nodePolyfills()],

@@ -18,7 +18,6 @@ export function ImageZoomExtension() {
         x.parentNode?.nodeName !== "A" &&
         !x.className.includes("medium-zoom-image"),
     );
-    console.log(elements);
     zoomRef.current = mediumZoom(elements);
     zoomRef.current?.update({ background: "#131111" });
 
