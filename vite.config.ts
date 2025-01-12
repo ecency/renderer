@@ -1,28 +1,27 @@
-import path from 'path'
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import dtsPlugin from "vite-plugin-dts"
+import path from "path";
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import dtsPlugin from "vite-plugin-dts";
+import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
     lib: {
-      entry: path.resolve(__dirname, 'src/lib/index.tsx'),
-      name: 'React Library Vite',
-      fileName: (format) => `react-library-vite.${format}.js`
+      entry: path.resolve(__dirname, "src/lib/index.ts"),
+      name: "Ecency Renderer",
+      fileName: (format) => `ecency-renderer.${format}.js`,
     },
     rollupOptions: {
-      // externalize deps that shouldn't be bundled
-      // into your library
-      external: ['react', 'react-dom'],
+      external: ["react", "react-dom", "clsx"],
       output: {
         // Provide global variables to use in the UMD build
         // for externalized deps
         globals: {
-          react: 'React'
-        }
-      }
-    }
+          react: "React",
+        },
+      },
+    },
   },
-  plugins: [react(), dtsPlugin({ rollupTypes: true })]
-})
+  plugins: [react(), dtsPlugin({ rollupTypes: true }), nodePolyfills()],
+});
