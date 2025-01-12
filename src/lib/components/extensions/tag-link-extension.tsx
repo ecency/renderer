@@ -1,0 +1,36 @@
+"use client";
+
+import React, { useEffect } from "react";
+import { hydrateRoot } from "react-dom/client";
+import "./tag-link-extension.scss";
+
+export function TagLinkRenderer({ tag }: { tag: string }) {
+  return <span>{tag.replace("/", "")}</span>;
+}
+
+export function TagLinkExtension() {
+  useEffect(() => {
+    const elements = [
+      ...Array.from(
+        document.querySelectorAll<HTMLElement>(
+          ".markdown-view:not(.markdown-view-pure) .markdown-tag-link",
+        ),
+      ),
+    ];
+    elements.forEach((element) => {
+      const container = document.createElement("a");
+
+      container.setAttribute("href", element.getAttribute("href") ?? "");
+      container.setAttribute("target", "_blank");
+      container.setAttribute("rel", "noopener");
+
+      container.classList.add("ecency-renderer-tag-extension");
+      container.classList.add("ecency-renderer-tag-extension-link");
+
+      hydrateRoot(container, <TagLinkRenderer tag={element.innerText} />);
+      element.parentElement?.replaceChild(container, element);
+    });
+  }, []);
+
+  return <></>;
+}

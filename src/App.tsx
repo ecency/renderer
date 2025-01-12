@@ -16,6 +16,10 @@ export function App() {
       "Author",
       "Hello!\n\nUsers: @ecency @demo.com @ecency.waves are top 3 users in a hive community",
     ],
+    [
+      "Tags",
+      "Hello!\n\nTags: #hello #trending #hive #btc are the most popular tags",
+    ],
   ];
   return (
     <div className="storybook">

@@ -7,6 +7,7 @@ import {
   AuthorLinkExtension,
   HivePostLinkExtension,
   ImageZoomExtension,
+  TagLinkExtension,
 } from "./extensions";
 
 interface Props {
@@ -36,6 +37,7 @@ export function EcencyRenderer({
           <ImageZoomExtension />
           <HivePostLinkExtension />
           <AuthorLinkExtension />
+          <TagLinkExtension />
         </>
       )}
     </>
