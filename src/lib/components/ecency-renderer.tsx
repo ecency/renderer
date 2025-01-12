@@ -3,7 +3,11 @@
 import React, { HTMLProps } from "react";
 import { renderPostBody } from "@ecency/render-helper";
 import { clsx } from "clsx";
-import { HivePostLinkExtension, ImageZoomExtension } from "./extensions";
+import {
+  AuthorLinkExtension,
+  HivePostLinkExtension,
+  ImageZoomExtension,
+} from "./extensions";
 
 interface Props {
   value: string;
@@ -31,6 +35,7 @@ export function EcencyRenderer({
         <>
           <ImageZoomExtension />
           <HivePostLinkExtension />
+          <AuthorLinkExtension />
         </>
       )}
     </>

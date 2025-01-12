@@ -12,6 +12,10 @@ export function App() {
       "Zoom image",
       "This is a test post(updated)(2x)\n\n\n![](https://images.ecency.com/DQmfMNicABD66eAmVM8E15v3z1C2Hw6pyzwHQ79imeLf5vd/img_0290.jpg)\n\nUpdate test(2x)",
     ],
+    [
+      "Author",
+      "Hello!\n\nUsers: @ecency @demo.com @ecency.waves are top 3 users in a hive community",
+    ],
   ];
   return (
     <div className="storybook">
