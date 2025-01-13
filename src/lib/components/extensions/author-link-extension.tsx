@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { RefObject, useEffect } from "react";
 import { hydrateRoot } from "react-dom/client";
 import "./author-link-extension.scss";
 
@@ -24,15 +24,17 @@ export function AuthorLinkRenderer({ author }: { author: string }) {
   );
 }
 
-export function AuthorLinkExtension() {
+export function AuthorLinkExtension({
+  containerRef,
+}: {
+  containerRef: RefObject<HTMLElement | null>;
+}) {
   useEffect(() => {
-    const elements = [
-      ...Array.from(
-        document.querySelectorAll<HTMLElement>(
-          ".markdown-view:not(.markdown-view-pure) .markdown-author-link",
-        ),
-      ),
-    ];
+    const elements = Array.from(
+      containerRef.current?.querySelectorAll<HTMLElement>(
+        ".markdown-view:not(.markdown-view-pure) .markdown-author-link",
+      ) ?? [],
+    );
     elements.forEach((element) => {
       const container = document.createElement("a");
 

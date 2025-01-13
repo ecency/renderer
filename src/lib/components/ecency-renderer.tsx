@@ -1,6 +1,4 @@
-"use server";
-
-import React, { HTMLProps } from "react";
+import React, { HTMLProps, useRef } from "react";
 import { renderPostBody } from "@ecency/render-helper";
 import { clsx } from "clsx";
 import {
@@ -8,6 +6,7 @@ import {
   HivePostLinkExtension,
   ImageZoomExtension,
   TagLinkExtension,
+  YoutubeVideoExtension,
 } from "./extensions";
 
 interface Props {
@@ -20,10 +19,13 @@ export function EcencyRenderer({
   pure = false,
   ...other
 }: HTMLProps<HTMLDivElement> & Props) {
+  const ref = useRef<HTMLDivElement>(null);
+
   return (
     <>
       <div
         {...other}
+        ref={ref}
         itemProp="articleBody"
         className={clsx(
           "entry-body markdown-view user-selectable",
@@ -34,10 +36,11 @@ export function EcencyRenderer({
       />
       {!pure && (
         <>
-          <ImageZoomExtension />
-          <HivePostLinkExtension />
-          <AuthorLinkExtension />
-          <TagLinkExtension />
+          <ImageZoomExtension containerRef={ref} />
+          <HivePostLinkExtension containerRef={ref} />
+          <AuthorLinkExtension containerRef={ref} />
+          <TagLinkExtension containerRef={ref} />
+          <YoutubeVideoExtension containerRef={ref} />
         </>
       )}
     </>

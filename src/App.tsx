@@ -20,6 +20,10 @@ export function App() {
       "Tags",
       "Hello!\n\nTags: #hello #trending #hive #btc are the most popular tags",
     ],
+    [
+      "Youtube video",
+      "Hello!\n\nhttps://www.youtube.com/watch?v=XN5Z88DLB8U\n",
+    ],
   ];
   return (
     <div className="storybook">

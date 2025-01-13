@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { RefObject, useEffect } from "react";
 import { hydrateRoot } from "react-dom/client";
 import "./tag-link-extension.scss";
 
@@ -8,15 +8,17 @@ export function TagLinkRenderer({ tag }: { tag: string }) {
   return <span>{tag.replace("/", "")}</span>;
 }
 
-export function TagLinkExtension() {
+export function TagLinkExtension({
+  containerRef,
+}: {
+  containerRef: RefObject<HTMLElement | null>;
+}) {
   useEffect(() => {
-    const elements = [
-      ...Array.from(
-        document.querySelectorAll<HTMLElement>(
-          ".markdown-view:not(.markdown-view-pure) .markdown-tag-link",
-        ),
-      ),
-    ];
+    const elements = Array.from(
+      containerRef.current?.querySelectorAll<HTMLElement>(
+        ".markdown-view:not(.markdown-view-pure) .markdown-tag-link",
+      ) ?? [],
+    );
     elements.forEach((element) => {
       const container = document.createElement("a");
 

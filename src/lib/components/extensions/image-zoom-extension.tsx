@@ -1,19 +1,21 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { RefObject, useEffect, useRef } from "react";
 import mediumZoom, { Zoom } from "medium-zoom";
 
-export function ImageZoomExtension() {
+export function ImageZoomExtension({
+  containerRef,
+}: {
+  containerRef: RefObject<HTMLElement | null>;
+}) {
   const zoomRef = useRef<Zoom>(undefined);
 
   useEffect(() => {
-    const elements = [
-      ...Array.from(
-        document.querySelectorAll<HTMLElement>(
-          ".markdown-view:not(.markdown-view-pure) img",
-        ),
-      ),
-    ].filter(
+    const elements = Array.from(
+      containerRef.current?.querySelectorAll<HTMLElement>(
+        ".markdown-view:not(.markdown-view-pure) img",
+      ) ?? [],
+    ).filter(
       (x) =>
         x.parentNode?.nodeName !== "A" &&
         !x.className.includes("medium-zoom-image"),

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { RefObject, useCallback, useEffect, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
 import "./hive-post-link-extension.scss";
 
@@ -94,15 +94,17 @@ export function HivePostLinkRenderer({ link }: { link: string }) {
   );
 }
 
-export function HivePostLinkExtension() {
+export function HivePostLinkExtension({
+  containerRef,
+}: {
+  containerRef: RefObject<HTMLElement | null>;
+}) {
   useEffect(() => {
-    const elements = [
-      ...Array.from(
-        document.querySelectorAll<HTMLElement>(
-          ".markdown-view:not(.markdown-view-pure) .markdown-post-link",
-        ),
-      ),
-    ];
+    const elements = Array.from(
+      containerRef.current?.querySelectorAll<HTMLElement>(
+        ".markdown-view:not(.markdown-view-pure) .markdown-post-link",
+      ) ?? [],
+    );
     elements.forEach((element) => {
       const container = document.createElement("div");
       container.classList.add("ecency-renderer-hive-post-extension");
