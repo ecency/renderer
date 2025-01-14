@@ -24,6 +24,25 @@ export function App() {
       "Youtube video",
       "Hello!\n\nhttps://www.youtube.com/watch?v=XN5Z88DLB8U\n",
     ],
+
+    [
+      "3Speak video",
+      "<center>\n" +
+        "\n" +
+        "[![](https://ipfs-3speak.b-cdn.net/ipfs/bafybeig5p3f4nj5zcz2pwf7a6ipqfs7nslcchfnbrhe6n5mox245jokbjy/)](https://3speak.tv/watch?v=theycallmedan/swqpoete)\n" +
+        "\n" +
+        "▶️ [Watch on 3Speak](https://3speak.tv/watch?v=theycallmedan/swqpoete)\n" +
+        "\n" +
+        "</center>\n" +
+        "\n" +
+        "---\n" +
+        "\n" +
+        "Giving some updates, my thoughts on where we are, and updates on various projects I'm involved in.\n" +
+        "\n" +
+        "---\n" +
+        "\n" +
+        "▶️ [3Speak](https://3speak.tv/watch?v=theycallmedan/swqpoete)",
+    ],
   ];
   return (
     <div className="storybook">

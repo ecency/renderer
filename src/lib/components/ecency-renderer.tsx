@@ -8,6 +8,7 @@ import {
   TagLinkExtension,
   YoutubeVideoExtension,
 } from "./extensions";
+import { ThreeSpeakVideoExtension } from "./extensions/three-speak-video-extension";
 
 interface Props {
   value: string;
@@ -41,6 +42,7 @@ export function EcencyRenderer({
           <AuthorLinkExtension containerRef={ref} />
           <TagLinkExtension containerRef={ref} />
           <YoutubeVideoExtension containerRef={ref} />
+          <ThreeSpeakVideoExtension containerRef={ref} />
         </>
       )}
     </>
