@@ -1,7 +1,7 @@
 {
   "name": "@ecency/renderer",
   "version": "1.0.0",
-  "description": "",
+  "description": "React components for rendering Hive posts using Ecency extensions",
   "keywords": [],
   "files": [
     "dist",
