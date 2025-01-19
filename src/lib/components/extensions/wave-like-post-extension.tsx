@@ -24,6 +24,10 @@ export function WaveLikePostRenderer({ link }: { link: string }) {
       return "threads";
     }
 
+    if (post?.permlink?.startsWith("re-liketu-moments")) {
+      return "moments";
+    }
+
     return "";
   }, [post]);
 
