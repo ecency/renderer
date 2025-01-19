@@ -1,4 +1,4 @@
-![Alt](https://github.com/@cency/renderer/actions/workflows/release.yml/badge.svg)
+![Alt](https://github.com/@ecency/renderer/actions/workflows/release.yml/badge.svg)
 [![npm version](https://badge.fury.io/js/@ecency%2Frenderer.svg)](https://badge.fury.io/js/@ecency%2Frenderer)
 # Ecency posts renderer
 
