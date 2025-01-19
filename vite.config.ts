@@ -24,6 +24,7 @@ export default defineConfig({
         "@ecency/render-helper",
         "medium-zoom",
         "react/jsx-runtime",
+        "@hiveio/dhive",
       ],
     },
   },

@@ -6,9 +6,11 @@ import {
   HivePostLinkExtension,
   ImageZoomExtension,
   TagLinkExtension,
+  WaveLikePostExtension,
   YoutubeVideoExtension,
 } from "./extensions";
 import { ThreeSpeakVideoExtension } from "./extensions/three-speak-video-extension";
+import { TwitterExtension } from "./extensions/twitter-extension";
 
 interface Props {
   value: string;
@@ -43,6 +45,8 @@ export function EcencyRenderer({
           <TagLinkExtension containerRef={ref} />
           <YoutubeVideoExtension containerRef={ref} />
           <ThreeSpeakVideoExtension containerRef={ref} />
+          <WaveLikePostExtension containerRef={ref} />
+          <TwitterExtension containerRef={ref} />
         </>
       )}
     </>

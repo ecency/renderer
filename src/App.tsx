@@ -43,6 +43,14 @@ export function App() {
         "\n" +
         "▶️ [3Speak](https://3speak.tv/watch?v=theycallmedan/swqpoete)",
     ],
+    [
+      "Wave, Threads, LikeTu, testhreads posts",
+      "Hello world!\n\nhttps://ecency.com/@demo.com/re-ecencywaves-2024127t153020761z\n\nhttps://inleo.io/threads/view/vimukthi/re-leothreads-2tbpqwfov?referral=vimukthi\n\nhttps://ecency.com/waves/@shamis/wave-2025116t2377298z\n",
+    ],
+    [
+      "Twitter widget",
+      "Hello world\n\nhttps://x.com/it_vicev/status/1798031021692055724",
+    ],
   ];
   return (
     <div className="storybook">

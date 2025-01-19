@@ -3,6 +3,7 @@
 import React, { RefObject, useCallback, useEffect, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
 import "./hive-post-link-extension.scss";
+import { isWaveLikePost } from "../functions";
 
 const simpleCache = new Map<
   string,
@@ -105,15 +106,17 @@ export function HivePostLinkExtension({
         ".markdown-view:not(.markdown-view-pure) .markdown-post-link",
       ) ?? [],
     );
-    elements.forEach((element) => {
-      const container = document.createElement("div");
-      container.classList.add("ecency-renderer-hive-post-extension");
-      hydrateRoot(
-        container,
-        <HivePostLinkRenderer link={element.getAttribute("href") ?? ""} />,
-      );
-      element.parentElement?.replaceChild(container, element);
-    });
+    elements
+      .filter((el) => !isWaveLikePost(el.getAttribute("href") ?? ""))
+      .forEach((element) => {
+        const container = document.createElement("div");
+        container.classList.add("ecency-renderer-hive-post-extension");
+        hydrateRoot(
+          container,
+          <HivePostLinkRenderer link={element.getAttribute("href") ?? ""} />,
+        );
+        element.parentElement?.replaceChild(container, element);
+      });
   }, []);
 
   return <></>;
