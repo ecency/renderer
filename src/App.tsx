@@ -61,6 +61,10 @@ export function App() {
 > *[In the silent depth of a blue sea, a lonely voice sings of things that were, things that might be, and things that are yet to come. Silent, rhythmic rumbles fill the void as the majestic creature floats by a man in his airtight pod, a thin shield against the masses of water...](/shortstory/@ambifokus/quantum-whispers)*
       `,
     ],
+    [
+      "Different links",
+      "[**Follow on X**](https://x.com/vsc_eco)\n[**Follow on Hive**](https://peakd.com/@vsc.network/)\n[**Official VSC Site**](https://vsc.eco/)\n[**Vote for our Hive Witness!**](https://vote.hive.uno/@vsc.network",
+    ],
   ];
   return (
     <div className="storybook">
