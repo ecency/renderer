@@ -51,6 +51,16 @@ export function App() {
       "Twitter widget",
       "Hello world\n\nhttps://x.com/it_vicev/status/1798031021692055724",
     ],
+    [
+      "Hive post wrapped with something",
+      `
+      <sup>(Inspired by a discussion about creativity, stories, distant worlds and musical soundscapes, while listening to "Petite" by N'TO.)</sup>
+
+---
+
+> *[In the silent depth of a blue sea, a lonely voice sings of things that were, things that might be, and things that are yet to come. Silent, rhythmic rumbles fill the void as the majestic creature floats by a man in his airtight pod, a thin shield against the masses of water...](/shortstory/@ambifokus/quantum-whispers)*
+      `,
+    ],
   ];
   return (
     <div className="storybook">

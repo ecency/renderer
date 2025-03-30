@@ -103,17 +103,28 @@ export function HivePostLinkExtension({
   useEffect(() => {
     const elements = Array.from(
       containerRef.current?.querySelectorAll<HTMLElement>(
-        ".markdown-view:not(.markdown-view-pure) .markdown-post-link",
-      ) ?? [],
+        ".markdown-view:not(.markdown-view-pure) .markdown-post-link"
+      ) ?? []
     );
     elements
       .filter((el) => !isWaveLikePost(el.getAttribute("href") ?? ""))
+      .filter((el) => {
+        try {
+          const [_, __, hrefAuthor, hrefPermlink] = new URL(
+            `https://ecency.com` + el.getAttribute("href")!
+          ).pathname.split("/");
+          console.log(hrefAuthor, hrefPermlink);
+          return el.innerText === `${hrefAuthor}/${hrefPermlink}`;
+        } catch (e) {
+          return true;
+        }
+      })
       .forEach((element) => {
         const container = document.createElement("div");
         container.classList.add("ecency-renderer-hive-post-extension");
         hydrateRoot(
           container,
-          <HivePostLinkRenderer link={element.getAttribute("href") ?? ""} />,
+          <HivePostLinkRenderer link={element.getAttribute("href") ?? ""} />
         );
         element.parentElement?.replaceChild(container, element);
       });
