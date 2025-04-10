@@ -11,7 +11,6 @@ import {
 } from "./extensions";
 import { ThreeSpeakVideoExtension } from "./extensions/three-speak-video-extension";
 import { TwitterExtension } from "./extensions/twitter-extension";
-import { VimeoVideoExtension } from "./extensions/vimeo-video-extension";
 
 interface Props {
   value: string;
@@ -48,7 +47,6 @@ export function EcencyRenderer({
           <ThreeSpeakVideoExtension containerRef={ref} />
           <WaveLikePostExtension containerRef={ref} />
           <TwitterExtension containerRef={ref} />
-          <VimeoVideoExtension containerRef={ref} />
         </>
       )}
     </>
