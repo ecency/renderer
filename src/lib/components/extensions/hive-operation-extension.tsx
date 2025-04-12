@@ -27,7 +27,7 @@ export function HiveOperationRenderer({ op }: Props) {
   return (
     <>
       <span className="ecency-renderer-hive-operation-extension-label">
-        Hive operation(click/tap to open)
+        Hive operation, click to Sign
       </span>
       {!decodedOp && op}
       <div className="ecency-renderer-hive-operation-extension-content">
@@ -61,8 +61,10 @@ export function HiveOperationRenderer({ op }: Props) {
 
 export function HiveOperationExtension({
   containerRef,
+  onClick,
 }: {
   containerRef: RefObject<HTMLElement | null>;
+  onClick?: (op: string) => void;
 }) {
   useEffect(() => {
     Array.from(
@@ -74,6 +76,8 @@ export function HiveOperationExtension({
       .forEach((element) => {
         const container = document.createElement("div");
         container.classList.add("ecency-renderer-hive-operation-extension");
+
+        container.addEventListener("click", () => onClick?.(op));
 
         const op = element.innerText.replace("hive://sign/op/", "");
 

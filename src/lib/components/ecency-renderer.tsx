@@ -16,11 +16,13 @@ import { TwitterExtension } from "./extensions/twitter-extension";
 interface Props {
   value: string;
   pure?: boolean;
+  onHiveOperationClick?: (op: string) => void;
 }
 
 export function EcencyRenderer({
   value,
   pure = false,
+  onHiveOperationClick,
   ...other
 }: HTMLProps<HTMLDivElement> & Props) {
   const ref = useRef<HTMLDivElement>(null);
@@ -48,7 +50,10 @@ export function EcencyRenderer({
           <ThreeSpeakVideoExtension containerRef={ref} />
           <WaveLikePostExtension containerRef={ref} />
           <TwitterExtension containerRef={ref} />
-          <HiveOperationExtension containerRef={ref} />
+          <HiveOperationExtension
+            containerRef={ref}
+            onClick={onHiveOperationClick}
+          />
         </>
       )}
     </>
