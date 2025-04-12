@@ -65,6 +65,11 @@ export function App() {
       "Different links",
       "[**Follow on X**](https://x.com/vsc_eco)\n[**Follow on Hive**](https://peakd.com/@vsc.network/)\n[**Official VSC Site**](https://vsc.eco/)\n[**Vote for our Hive Witness!**](https://vote.hive.uno/@vsc.network",
     ],
+    [
+      "Hive operations",
+      "Reprehenderit quis ducimus nesciunt et dolor illo aliquam facere. Deserunt iure quod excepturi consequuntur accusamus. @demo.com hive://sign/op/WyJ0cmFuc2ZlciIseyJ0byI6ImtleWNoYWluIiwiYW1vdW50IjoiMC4wMDEgSElWRSIsIm1lbW8iOiIifV0. Ullam voluptatibus minima quidem vel sit nobis earum quibusdam. Minima asperiores provident dolore natus dicta molestiae quod.\n" +
+        "[hive://sign/op/WyJ0cmFuc2ZlciIseyJ0byI6ImtleWNoYWluIiwiYW1vdW50IjoiMC4wMDEgSElWRSIsIm1lbW8iOiIifV0.](hive://sign/op/WyJ0cmFuc2ZlciIseyJ0byI6ImtleWNoYWluIiwiYW1vdW50IjoiMC4wMDEgSElWRSIsIm1lbW8iOiIifV0.)",
+    ],
   ];
   return (
     <div className="storybook">

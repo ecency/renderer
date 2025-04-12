@@ -3,6 +3,7 @@ import { renderPostBody } from "@ecency/render-helper";
 import { clsx } from "clsx";
 import {
   AuthorLinkExtension,
+  HiveOperationExtension,
   HivePostLinkExtension,
   ImageZoomExtension,
   TagLinkExtension,
@@ -47,6 +48,7 @@ export function EcencyRenderer({
           <ThreeSpeakVideoExtension containerRef={ref} />
           <WaveLikePostExtension containerRef={ref} />
           <TwitterExtension containerRef={ref} />
+          <HiveOperationExtension containerRef={ref} />
         </>
       )}
     </>

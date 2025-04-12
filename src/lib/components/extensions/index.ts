@@ -4,3 +4,4 @@ export * from "./author-link-extension";
 export * from "./tag-link-extension";
 export * from "./youtube-video-extension";
 export * from "./wave-like-post-extension";
+export * from "./hive-operation-extension";

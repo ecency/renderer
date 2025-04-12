@@ -113,7 +113,6 @@ export function HivePostLinkExtension({
           const [_, __, hrefAuthor, hrefPermlink] = new URL(
             `https://ecency.com` + el.getAttribute("href")!
           ).pathname.split("/");
-          console.log(hrefAuthor, hrefPermlink);
           return el.innerText === `${hrefAuthor}/${hrefPermlink}`;
         } catch (e) {
           return true;
