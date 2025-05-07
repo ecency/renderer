@@ -13,7 +13,22 @@ export function ThreeSpeakVideoRenderer({
 }) {
   const [show, setShow] = useState(false);
 
-  const playButtonClickHandler = useCallback(() => setShow((v) => !v), []);
+  const playButtonClickHandler = useCallback(() => {
+    const v = !show;
+    const playButton = container.querySelector(".markdown-video-play");
+    const thumbnail = container.querySelector(".video-thumbnail");
+
+    if (playButton) {
+      playButton.addEventListener("click", playButtonClickHandler);
+      (playButton as HTMLElement).style.display = v ? "none" : "block";
+    }
+
+    if (thumbnail) {
+      (thumbnail as HTMLElement).style.display = v ? "none" : "block";
+    }
+
+    setShow(v);
+  }, []);
 
   useEffect(() => {
     container
@@ -50,8 +65,8 @@ export function ThreeSpeakVideoExtension({
   useEffect(() => {
     const elements = Array.from(
       containerRef.current?.querySelectorAll<HTMLElement>(
-        ".markdown-view:not(.markdown-view-pure) .markdown-video-link-speak:not(.ecency-renderer-speak-extension)",
-      ) ?? [],
+        ".markdown-view:not(.markdown-view-pure) .markdown-video-link-speak:not(.ecency-renderer-speak-extension)"
+      ) ?? []
     );
     elements.forEach((element) => {
       const container = document.createElement("div");
@@ -64,7 +79,7 @@ export function ThreeSpeakVideoExtension({
         <ThreeSpeakVideoRenderer
           embedSrc={element.dataset.embedSrc ?? ""}
           container={element}
-        />,
+        />
       );
       element.appendChild(container);
     });
