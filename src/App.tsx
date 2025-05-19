@@ -1,6 +1,8 @@
-import React from "react";
-import { EcencyRenderer } from "./lib";
+import React, { memo } from "react";
+import { EcencyRenderer as ER } from "./lib";
 import "./lib/ecency-renderer.scss";
+
+const EcencyRenderer = memo(ER);
 
 export function App() {
   const demo = [
@@ -10,7 +12,7 @@ export function App() {
     ],
     [
       "Zoom image",
-      "This is a test post(updated)(2x)\n\n\n![](https://images.ecency.com/DQmfMNicABD66eAmVM8E15v3z1C2Hw6pyzwHQ79imeLf5vd/img_0290.jpg)\n\nUpdate test(2x)",
+      "This is a test post(updated)(2x)\n\n\n![my cat is here](https://images.ecency.com/DQmfMNicABD66eAmVM8E15v3z1C2Hw6pyzwHQ79imeLf5vd/img_0290.jpg)\n\nUpdate test(2x)",
     ],
     [
       "Author",
