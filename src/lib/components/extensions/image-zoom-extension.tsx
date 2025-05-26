@@ -30,10 +30,7 @@ export function ImageZoomExtension({
       container.classList.add("markdown-image-container");
       container.innerHTML = el.outerHTML;
 
-      console.count(el.outerHTML);
-
       if (captionText) {
-        console.count(captionText);
         caption.innerText = el.getAttribute("alt") ?? "";
         caption.classList.add("markdown-img-caption");
         container.appendChild(caption);
