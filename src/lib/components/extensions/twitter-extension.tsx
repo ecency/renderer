@@ -22,10 +22,14 @@ export function TwitterExtension({
           el.getAttribute("href")?.startsWith("https://twitter.com")
       )
       .forEach((element) => {
+        let tweetId: string | undefined = undefined;
         const container = document.createElement("div");
-        const [_, __, ___, tweetId] = URL.parse(
-          element.getAttribute("href")!
-        )!.pathname.split("/");
+        try {
+          const [_, __, ___, id] = URL.parse(
+            element.getAttribute("href")!
+          )!.pathname.split("/");
+          tweetId = id;
+        } catch (e) {}
 
         if (!tweetId) {
           return;
