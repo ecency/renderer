@@ -2,7 +2,7 @@
 
 import React, { RefObject, useEffect } from "react";
 import { hydrateRoot } from "react-dom/client";
-import { TwitterTweetEmbed } from "react-twitter-embed";
+import { Tweet } from "react-tweet";
 
 export function TwitterExtension({
   containerRef,
@@ -38,7 +38,7 @@ export function TwitterExtension({
         container.classList.add("ecency-renderer-twitter-extension-frame");
         element.classList.add("ecency-renderer-twitter-extension");
 
-        hydrateRoot(container, <TwitterTweetEmbed tweetId={tweetId} />);
+        hydrateRoot(container, <Tweet id={tweetId} />);
         element.innerHTML = "";
         element.appendChild(container);
       });
