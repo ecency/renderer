@@ -20,7 +20,7 @@ jobs:
         run: |
           for i in 1 2 3; do
             echo "🔁 Attempt $i: yarn install"
-            yarn install && break
+            yarn install --network-timeout 60000 && break
             echo "❌ Attempt $i failed. Retrying in 10s..."
             sleep 10
           done
