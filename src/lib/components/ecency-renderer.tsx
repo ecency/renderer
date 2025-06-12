@@ -17,12 +17,14 @@ interface Props {
   value: string;
   pure?: boolean;
   onHiveOperationClick?: (op: string) => void;
+  TwitterComponent?: any;
 }
 
 export function EcencyRenderer({
   value,
   pure = false,
   onHiveOperationClick,
+  TwitterComponent = () => <div>No twitter component</div>,
   ...other
 }: HTMLProps<HTMLDivElement> & Props) {
   const ref = useRef<HTMLDivElement>(null);
@@ -49,7 +51,10 @@ export function EcencyRenderer({
           <YoutubeVideoExtension containerRef={ref} />
           <ThreeSpeakVideoExtension containerRef={ref} />
           <WaveLikePostExtension containerRef={ref} />
-          <TwitterExtension containerRef={ref} />
+          <TwitterExtension
+            containerRef={ref}
+            ComponentInstance={TwitterComponent}
+          />
           <HiveOperationExtension
             containerRef={ref}
             onClick={onHiveOperationClick}

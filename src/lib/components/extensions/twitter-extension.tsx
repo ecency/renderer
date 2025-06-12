@@ -1,13 +1,14 @@
 "use client";
 
-import React, { RefObject, useEffect } from "react";
+import React, { FunctionComponent, RefObject, useEffect } from "react";
 import { hydrateRoot } from "react-dom/client";
-import { Tweet } from "react-tweet";
 
 export function TwitterExtension({
   containerRef,
+  ComponentInstance,
 }: {
   containerRef: RefObject<HTMLElement | null>;
+  ComponentInstance: any;
 }) {
   useEffect(() => {
     const elements = Array.from(
@@ -38,7 +39,7 @@ export function TwitterExtension({
         container.classList.add("ecency-renderer-twitter-extension-frame");
         element.classList.add("ecency-renderer-twitter-extension");
 
-        hydrateRoot(container, <Tweet id={tweetId} />);
+        hydrateRoot(container, <ComponentInstance id={tweetId} />);
         element.innerHTML = "";
         element.appendChild(container);
       });
