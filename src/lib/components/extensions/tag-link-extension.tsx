@@ -1,7 +1,7 @@
 "use client";
 
 import React, { RefObject, useEffect } from "react";
-import { hydrateRoot } from "react-dom/client";
+import { createRoot } from "react-dom/client";
 import "./tag-link-extension.scss";
 
 export function TagLinkRenderer({ tag }: { tag: string }) {
@@ -16,9 +16,10 @@ export function TagLinkExtension({
   useEffect(() => {
     const elements = Array.from(
       containerRef.current?.querySelectorAll<HTMLElement>(
-        ".markdown-view:not(.markdown-view-pure) .markdown-tag-link",
-      ) ?? [],
+            ".markdown-view:not(.markdown-view-pure) .markdown-tag-link"
+        ) ?? []
     );
+
     elements.forEach((element) => {
       const container = document.createElement("a");
 
@@ -29,10 +30,13 @@ export function TagLinkExtension({
       container.classList.add("ecency-renderer-tag-extension");
       container.classList.add("ecency-renderer-tag-extension-link");
 
-      hydrateRoot(container, <TagLinkRenderer tag={element.innerText} />);
+      // Use createRoot instead of hydrateRoot
+      const root = createRoot(container);
+      root.render(<TagLinkRenderer tag={element.innerText} />);
+
       element.parentElement?.replaceChild(container, element);
     });
   }, []);
 
-  return <></>;
+  return null;
 }
