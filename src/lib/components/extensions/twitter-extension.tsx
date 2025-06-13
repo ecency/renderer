@@ -1,49 +1,50 @@
 "use client";
 
-import React, { FunctionComponent, RefObject, useEffect } from "react";
-import { hydrateRoot } from "react-dom/client";
+import React, { RefObject, useEffect } from "react";
+import { createRoot } from "react-dom/client";
 
 export function TwitterExtension({
   containerRef,
   ComponentInstance,
 }: {
   containerRef: RefObject<HTMLElement | null>;
-  ComponentInstance: any;
+  ComponentInstance: React.FC<{ id: string }>;
 }) {
   useEffect(() => {
     const elements = Array.from(
-      containerRef.current?.querySelectorAll<HTMLElement>(
-        ".markdown-view:not(.markdown-view-pure) .markdown-external-link"
-      ) ?? []
+        containerRef.current?.querySelectorAll<HTMLElement>(
+            ".markdown-view:not(.markdown-view-pure) .markdown-external-link"
+        ) ?? []
     );
+
     elements
-      .filter(
-        (el) =>
-          el.getAttribute("href")?.startsWith("https://x.com") ||
-          el.getAttribute("href")?.startsWith("https://twitter.com")
-      )
-      .forEach((element) => {
-        let tweetId: string | undefined = undefined;
-        const container = document.createElement("div");
-        try {
-          const [_, __, ___, id] = URL.parse(
-            element.getAttribute("href")!
-          )!.pathname.split("/");
-          tweetId = id;
-        } catch (e) {}
+        .filter((el) => {
+          const href = el.getAttribute("href") || "";
+          return href.startsWith("https://x.com") || href.startsWith("https://twitter.com");
+        })
+        .forEach((element) => {
+          try {
+            const href = element.getAttribute("href");
+            if (!href) return;
 
-        if (!tweetId) {
-          return;
-        }
+            const url = new URL(href);
+            const tweetId = url.pathname.split("/").pop();
+            if (!tweetId) return;
 
-        container.classList.add("ecency-renderer-twitter-extension-frame");
-        element.classList.add("ecency-renderer-twitter-extension");
+            const container = document.createElement("div");
+            container.classList.add("ecency-renderer-twitter-extension-frame");
+            element.classList.add("ecency-renderer-twitter-extension");
 
-        hydrateRoot(container, <ComponentInstance id={tweetId} />);
-        element.innerHTML = "";
-        element.appendChild(container);
-      });
-  }, []);
+            element.innerHTML = "";
+            element.appendChild(container);
 
-  return <></>;
+            const root = createRoot(container);
+            root.render(<ComponentInstance id={tweetId} />);
+          } catch (e) {
+            console.warn("TwitterExtension failed to render tweet:", e);
+          }
+        });
+  }, [containerRef]);
+
+  return null;
 }
