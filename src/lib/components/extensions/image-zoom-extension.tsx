@@ -1,10 +1,5 @@
-"use client";
-
-import mediumZoom, { Zoom } from "medium-zoom";
-import React, { RefObject, useEffect, useRef } from "react";
-
 export function ImageZoomExtension({
-  containerRef,
+ containerRef,
 }: {
   containerRef: RefObject<HTMLElement | null>;
 }) {
@@ -12,40 +7,58 @@ export function ImageZoomExtension({
 
   useEffect(() => {
     const elements = Array.from(
-      containerRef.current?.querySelectorAll<HTMLElement>(
-        ".markdown-view:not(.markdown-view-pure) img"
-      ) ?? []
+        containerRef.current?.querySelectorAll<HTMLImageElement>(
+            ".markdown-view:not(.markdown-view-pure) img"
+        ) ?? []
     ).filter(
-      (x) =>
-        x.parentNode?.nodeName !== "A" &&
-        !x.className.includes("medium-zoom-image") &&
-        !x.parentElement?.classList.contains(".markdown-image-container")
+        (x) =>
+            x.parentNode?.nodeName !== "A" &&
+            !x.classList.contains("medium-zoom-image") &&
+            !x.parentElement?.classList.contains("markdown-image-container")
     );
 
     elements.forEach((el) => {
       const container = document.createElement("div");
-      const caption = document.createElement("div");
-      const captionText = el.getAttribute("alt");
-
       container.classList.add("markdown-image-container");
-      container.innerHTML = el.outerHTML;
+
+      const clonedImage = el.cloneNode(true) as HTMLImageElement;
+
+      const title = el.getAttribute("title")?.trim();
+      const dataCaption = el.getAttribute("data-caption")?.trim();
+      const alt = el.getAttribute("alt")?.trim();
+
+      // Check if alt looks like a filename
+      const isAltFilename = alt
+          ? /^[\w,\s-]+\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(alt)
+          : false;
+
+      // Use title > data-caption > alt (only if not filename)
+      const captionText = title || dataCaption || (!isAltFilename ? alt : "");
 
       if (captionText) {
-        caption.innerText = el.getAttribute("alt") ?? "";
+        const caption = document.createElement("div");
         caption.classList.add("markdown-img-caption");
+        caption.innerText = captionText;
+        container.appendChild(clonedImage);
         container.appendChild(caption);
+      } else {
+        container.appendChild(clonedImage);
       }
 
       el.parentElement?.replaceChild(container, el);
     });
 
-    // Search images one more time after all DOM manipulations
+    // Attach medium-zoom after DOM mutation
     zoomRef.current = mediumZoom(
-      Array.from(
-        containerRef.current?.querySelectorAll<HTMLElement>(
-          ".markdown-view:not(.markdown-view-pure) img"
-        ) ?? []
-      )
+        Array.from(
+            containerRef.current?.querySelectorAll<HTMLImageElement>(
+                ".markdown-view:not(.markdown-view-pure) img"
+            ) ?? []
+        ).filter(
+            (x) =>
+                !x.closest(".markdown-image-container") &&
+                !x.classList.contains("medium-zoom-image")
+        )
     );
     zoomRef.current?.update({ background: "#131111" });
 
@@ -53,5 +66,6 @@ export function ImageZoomExtension({
       zoomRef.current?.detach();
     };
   }, []);
+
   return <></>;
 }
