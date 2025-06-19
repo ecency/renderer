@@ -32,16 +32,14 @@ export function YoutubeVideoRenderer({
   }, [show]);
 
   return show ? (
-    <div className="video-wrapper">
-      <iframe
-          className="youtube-shorts-iframe"
-          src={embedSrc}
-          title="Video player"
-          frameBorder="0"
-          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowFullScreen
-      />
-    </div>
+    <iframe
+      className="youtube-shorts-iframe"
+      src={embedSrc}
+      title="Video player"
+      frameBorder="0"
+      allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowFullScreen
+    />
   ) : null;
 }
 
