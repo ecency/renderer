@@ -19,7 +19,7 @@ export function ImageZoomExtension({
         (x) =>
             x.parentNode?.nodeName !== "A" &&
             !x.classList.contains("medium-zoom-image") &&
-            !x.parentElement?.classList.contains("markdown-image-container")
+            !x.closest(".markdown-image-container")
     );
 
     elements.forEach((el) => {
@@ -54,11 +54,9 @@ export function ImageZoomExtension({
 
     // Apply zoom after modifications
     zoomRef.current = mediumZoom(
-        Array.from(
-            containerRef.current?.querySelectorAll<HTMLElement>(
-                ".markdown-view:not(.markdown-view-pure) img"
-            ) ?? []
-        )
+        containerRef.current?.querySelectorAll<HTMLImageElement>(
+            ".markdown-view:not(.markdown-view-pure) img"
+        ) ?? []
     );
 
     zoomRef.current?.update({ background: "#131111" });
