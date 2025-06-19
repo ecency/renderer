@@ -1,3 +1,8 @@
+"use client";
+
+import mediumZoom, { Zoom } from "medium-zoom";
+import React, { RefObject, useEffect, useRef } from "react";
+
 export function ImageZoomExtension({
  containerRef,
 }: {
@@ -23,16 +28,15 @@ export function ImageZoomExtension({
 
       const clonedImage = el.cloneNode(true) as HTMLImageElement;
 
+      // Caption logic
       const title = el.getAttribute("title")?.trim();
       const dataCaption = el.getAttribute("data-caption")?.trim();
       const alt = el.getAttribute("alt")?.trim();
 
-      // Check if alt looks like a filename
       const isAltFilename = alt
           ? /^[\w,\s-]+\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(alt)
           : false;
 
-      // Use title > data-caption > alt (only if not filename)
       const captionText = title || dataCaption || (!isAltFilename ? alt : "");
 
       if (captionText) {
@@ -48,7 +52,7 @@ export function ImageZoomExtension({
       el.parentElement?.replaceChild(container, el);
     });
 
-    // Attach medium-zoom after DOM mutation
+    // Apply zoom after modifications
     zoomRef.current = mediumZoom(
         Array.from(
             containerRef.current?.querySelectorAll<HTMLImageElement>(
@@ -60,6 +64,7 @@ export function ImageZoomExtension({
                 !x.classList.contains("medium-zoom-image")
         )
     );
+
     zoomRef.current?.update({ background: "#131111" });
 
     return () => {
