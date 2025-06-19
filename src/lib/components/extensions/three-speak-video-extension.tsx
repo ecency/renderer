@@ -13,48 +13,34 @@ export function ThreeSpeakVideoRenderer({
 }) {
   const [show, setShow] = useState(false);
 
-  const playButtonClickHandler = useCallback(() => {
-    const v = !show;
-    const playButton = container.querySelector(".markdown-video-play");
-    const thumbnail = container.querySelector(".video-thumbnail");
-
-    if (playButton) {
-      playButton.addEventListener("click", playButtonClickHandler);
-      (playButton as HTMLElement).style.display = v ? "none" : "block";
-    }
-
-    if (thumbnail) {
-      (thumbnail as HTMLElement).style.display = v ? "none" : "block";
-    }
-
-    setShow(v);
+  useEffect(() => {
+    const handler = () => setShow(true); // not toggle
+    const btn = container.querySelector(".markdown-video-play");
+    btn?.addEventListener("click", handler);
+    return () => btn?.removeEventListener("click", handler);
   }, []);
 
   useEffect(() => {
-    container
-      .querySelector(".markdown-video-play")
-      ?.addEventListener("click", playButtonClickHandler);
-    return () => {
-      container
-        .querySelector(".markdown-video-play")
-        ?.removeEventListener("click", playButtonClickHandler);
-    };
-  }, []);
+    if (show) {
+      const thumb = container.querySelector(".video-thumbnail");
+      const playBtn = container.querySelector(".markdown-video-play");
+      if (thumb) (thumb as HTMLElement).style.display = "none";
+      if (playBtn) (playBtn as HTMLElement).style.display = "none";
+    }
+  }, [show]);
 
   return show ? (
-    <iframe
-      className="speak-iframe"
-      width="100%"
-      height="200"
-      src={`${embedSrc}`}
-      title="Video player"
-      frameBorder="0"
-      allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      allowFullScreen={true}
-    />
-  ) : (
-    <></>
-  );
+      <iframe
+          className="speak-iframe"
+          width="100%"
+          height="300"
+          src={embedSrc}
+          title="Video player"
+          frameBorder="0"
+          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+      />
+  ) : null;
 }
 
 export function ThreeSpeakVideoExtension({

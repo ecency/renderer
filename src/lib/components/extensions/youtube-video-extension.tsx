@@ -6,44 +6,43 @@ import { clsx } from "clsx";
 import "./youtube-video-extension.scss";
 
 export function YoutubeVideoRenderer({
-  embedSrc,
-  container,
-}: {
+   embedSrc,
+   container,
+ }: {
   embedSrc: string;
   container: HTMLElement;
 }) {
   const [show, setShow] = useState(false);
 
-  const playButtonClickHandler = useCallback(() => setShow((v) => !v), []);
-
   useEffect(() => {
-    container
-      .querySelector(".markdown-video-play")
-      ?.addEventListener("click", playButtonClickHandler);
-    return () => {
-      container
-        .querySelector(".markdown-video-play")
-        ?.removeEventListener("click", playButtonClickHandler);
-    };
+    const handler = () => setShow(true);
+    container.addEventListener("click", handler);
+    return () => container.removeEventListener("click", handler);
   }, []);
 
+
+
+  useEffect(() => {
+    if (show) {
+      const thumb = container.querySelector(".video-thumbnail");
+      const playBtn = container.querySelector(".markdown-video-play");
+      if (thumb) (thumb as HTMLElement).style.display = "none";
+      if (playBtn) (playBtn as HTMLElement).style.display = "none";
+    }
+  }, [show]);
+
   return show ? (
-    <iframe
-      className={clsx(
-        "youtube-shorts-iframe",
-        show && "youtube-shorts-iframe-show",
-      )}
-      width="100%"
-      height="200"
-      src={`${embedSrc}`}
-      title="Video player"
-      frameBorder="0"
-      allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      allowFullScreen={true}
-    />
-  ) : (
-    <></>
-  );
+    <div className="video-wrapper">
+      <iframe
+          className="youtube-shorts-iframe"
+          src={embedSrc}
+          title="Video player"
+          frameBorder="0"
+          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+      />
+    </div>
+  ) : null;
 }
 
 export function YoutubeVideoExtension({
