@@ -12,7 +12,7 @@ export function ImageZoomExtension({
 
   useEffect(() => {
     const elements = Array.from(
-        containerRef.current?.querySelectorAll<HTMLImageElement>(
+        containerRef.current?.querySelectorAll<HTMLElement>(
             ".markdown-view:not(.markdown-view-pure) img"
         ) ?? []
     ).filter(
@@ -26,7 +26,7 @@ export function ImageZoomExtension({
       const container = document.createElement("div");
       container.classList.add("markdown-image-container");
 
-      const clonedImage = el.cloneNode(true) as HTMLImageElement;
+      const clonedImage = el.cloneNode(true) as HTMLElement;
 
       // Caption logic
       const title = el.getAttribute("title")?.trim();
@@ -55,13 +55,9 @@ export function ImageZoomExtension({
     // Apply zoom after modifications
     zoomRef.current = mediumZoom(
         Array.from(
-            containerRef.current?.querySelectorAll<HTMLImageElement>(
+            containerRef.current?.querySelectorAll<HTMLElement>(
                 ".markdown-view:not(.markdown-view-pure) img"
             ) ?? []
-        ).filter(
-            (x) =>
-                !x.closest(".markdown-image-container") &&
-                !x.classList.contains("medium-zoom-image")
         )
     );
 
