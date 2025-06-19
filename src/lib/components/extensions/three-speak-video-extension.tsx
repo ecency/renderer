@@ -14,16 +14,16 @@ export function ThreeSpeakVideoRenderer({
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    const handler = () => setShow(true); // not toggle
-    const btn = container.querySelector(".markdown-video-play");
-    btn?.addEventListener("click", handler);
-    return () => btn?.removeEventListener("click", handler);
+    const handler = () => setShow(true);
+    container.addEventListener("click", handler);
+    return () => container.removeEventListener("click", handler);
   }, []);
 
   useEffect(() => {
     if (show) {
       const thumb = container.querySelector(".video-thumbnail");
       const playBtn = container.querySelector(".markdown-video-play");
+
       if (thumb) (thumb as HTMLElement).style.display = "none";
       if (playBtn) (playBtn as HTMLElement).style.display = "none";
     }
@@ -32,10 +32,8 @@ export function ThreeSpeakVideoRenderer({
   return show ? (
       <iframe
           className="speak-iframe"
-          width="100%"
-          height="300"
           src={embedSrc}
-          title="Video player"
+          title="3Speak video"
           frameBorder="0"
           allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen

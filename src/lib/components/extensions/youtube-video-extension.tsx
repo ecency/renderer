@@ -24,12 +24,7 @@ export function YoutubeVideoRenderer({
     if (show) {
       const thumb = container.querySelector(".video-thumbnail");
       const playBtn = container.querySelector(".markdown-video-play");
-
-      if (thumb) {
-        (thumb as HTMLElement).classList.remove("medium-zoom-image");
-        (thumb as HTMLElement).style.display = "none";
-      }
-
+      if (thumb) (thumb as HTMLElement).style.display = "none";
       if (playBtn) (playBtn as HTMLElement).style.display = "none";
     }
   }, [show]);
