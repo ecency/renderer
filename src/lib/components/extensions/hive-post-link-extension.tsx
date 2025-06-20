@@ -15,6 +15,22 @@ const simpleCache = new Map<
     }
 >();
 
+function isInvalidPermlinkLink(path: string): boolean {
+  try {
+    const parts = new URL(`https://ecency.com${path}`).pathname.split("/");
+    const permlink = decodeURIComponent(parts[3] || "");
+
+    const isImage = /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(permlink);
+    const hasBadChars = /[?#]/.test(permlink);
+    const isClean = /^[a-z0-9-]+$/.test(permlink); // Hive-style
+
+    return !isClean || isImage || hasBadChars;
+  } catch {
+    return true;
+  }
+}
+
+
 export function HivePostLinkRenderer({ link }: { link: string }) {
   const [data, setData] = useState<{
     title: string;
@@ -25,6 +41,10 @@ export function HivePostLinkRenderer({ link }: { link: string }) {
   const fetchData = useCallback(async () => {
     if (simpleCache.has(link)) {
       setData(simpleCache.get(link));
+      return;
+    }
+    if (isInvalidPermlinkLink(link)) {
+      console.warn("[Ecency Renderer] Skipping invalid post link:", link);
       return;
     }
 
