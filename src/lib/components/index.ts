@@ -1,3 +1,2 @@
 export * from "./ecency-renderer";
-export * from "./setupPostEnhancements";
-
+export * from "./utils/setupPostEnhancements"
