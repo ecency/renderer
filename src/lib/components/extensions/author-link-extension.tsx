@@ -5,7 +5,7 @@ import { createRoot } from "react-dom/client";
 import "./author-link-extension.scss";
 
 export function AuthorLinkRenderer({ author }: { author: string }) {
-  const imageSrc = `https://images.ecency.com/u${author.replace("@", "")}/avatar/small`;
+  const imageSrc = `https://images.ecency.com/u${author.toLowerCase().replace("@", "")}/avatar/small`;
 
   return (
       <>
@@ -18,7 +18,7 @@ export function AuthorLinkRenderer({ author }: { author: string }) {
         <span className="ecency-renderer-author-extension-link-content-label">
           Hive account
         </span>
-          <span>{author.replace("/", "")}</span>
+          <span>{author.toLowerCase().replace("/", "")}</span>
         </div>
       </>
   );

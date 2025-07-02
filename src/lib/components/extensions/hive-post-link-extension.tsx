@@ -37,19 +37,19 @@ export function HivePostLinkRenderer({ link }: { link: string }) {
     description?: string;
     image?: string;
   }>();
-
+  const normalize = link.toLowerCase();
   const fetchData = useCallback(async () => {
-    if (simpleCache.has(link)) {
-      setData(simpleCache.get(link));
+    if (simpleCache.has(normalize)) {
+      setData(simpleCache.get(normalize));
       return;
     }
-    if (isInvalidPermlinkLink(link)) {
-      console.warn("[Ecency Renderer] Skipping invalid post link:", link);
+    if (isInvalidPermlinkLink(normalize)) {
+      console.warn("[Ecency Renderer] Skipping invalid post link:", normalize);
       return;
     }
 
     try {
-      const response = await fetch(`https://ecency.com${link}`, {
+      const response = await fetch(`https://ecency.com${normalize.toLowerCase()}`, {
         method: "GET",
       });
       const raw = await response.text();
@@ -73,7 +73,7 @@ export function HivePostLinkRenderer({ link }: { link: string }) {
               ?.getAttribute("content") ?? undefined, // normalized
         };
 
-        simpleCache.set(link, preview);
+        simpleCache.set(normalize, preview);
         setData(preview);
       }
     } catch (e) {
