@@ -37,7 +37,7 @@ export function HivePostLinkRenderer({ link }: { link: string }) {
     description?: string;
     image?: string;
   }>();
-  const normalize = link.toLowerCase();
+  const normalize = link.replace("https://ecency.com","").toLowerCase();
   const fetchData = useCallback(async () => {
     if (simpleCache.has(normalize)) {
       setData(simpleCache.get(normalize));
