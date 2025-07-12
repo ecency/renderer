@@ -8,7 +8,9 @@ export function applyHivePostLinks(container: HTMLElement) {
         )
     );
 
-    elements.forEach((el) => {
+    elements
+        .filter((el) => el.dataset.isInline === "false")
+        .forEach((el) => {
         if (el.dataset.enhanced === "true") return;
         el.dataset.enhanced = "true";
 
