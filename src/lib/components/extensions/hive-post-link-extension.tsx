@@ -1,6 +1,12 @@
 "use client";
 
-import React, { RefObject, useCallback, useEffect, useState } from "react";
+import React, {
+  RefObject,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { createRoot } from "react-dom/client";
 import "./hive-post-link-extension.scss";
 import { isWaveLikePost } from "../functions";
@@ -37,19 +43,22 @@ export function HivePostLinkRenderer({ link }: { link: string }) {
     description?: string;
     image?: string;
   }>();
-  const normalize = link.replace("https://ecency.com","").toLowerCase();
+
+  const url = useMemo(() => new URL(link, "https://ecency.com"), [link]);
+  const cacheKey = url.pathname.toLowerCase();
+
   const fetchData = useCallback(async () => {
-    if (simpleCache.has(normalize)) {
-      setData(simpleCache.get(normalize));
+    if (simpleCache.has(cacheKey)) {
+      setData(simpleCache.get(cacheKey));
       return;
     }
-    if (isInvalidPermlinkLink(normalize)) {
-      console.warn("[Ecency Renderer] Skipping invalid post link:", normalize);
+    if (isInvalidPermlinkLink(cacheKey)) {
+      console.warn("[Ecency Renderer] Skipping invalid post link:", cacheKey);
       return;
     }
 
     try {
-      const response = await fetch(`https://ecency.com${normalize.toLowerCase()}`, {
+      const response = await fetch(`https://ecency.com${cacheKey}`, {
         method: "GET",
       });
       const raw = await response.text();
@@ -57,63 +66,72 @@ export function HivePostLinkRenderer({ link }: { link: string }) {
       pageDOM.innerHTML = raw;
 
       const rawTitle = pageDOM
-          .querySelector(`meta[property="og:title"]`)
-          ?.getAttribute("content");
+        .querySelector(`meta[property="og:title"]`)
+        ?.getAttribute("content");
 
       if (rawTitle) {
         const preview = {
           title: rawTitle,
-          description: pageDOM
+          description:
+            pageDOM
               .querySelector(`meta[property="og:description"]`)
               ?.getAttribute("content")
-              ?.substring(0, 71) ?? undefined, // normalized
-
-          image: pageDOM
+              ?.substring(0, 71) ?? undefined,
+          image:
+            pageDOM
               .querySelector(`meta[property="og:image"]`)
-              ?.getAttribute("content") ?? undefined, // normalized
+              ?.getAttribute("content") ?? undefined,
         };
 
-        simpleCache.set(normalize, preview);
+        simpleCache.set(cacheKey, preview);
         setData(preview);
       }
     } catch (e) {
       console.error(`[Ecency Renderer] Failed to fetch preview: ${link}`, e);
     }
-  }, [link]);
+  }, [cacheKey, link]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
+  const enhancedHref = useMemo(() => {
+    const u = new URL(url.href);
+    if (!u.searchParams.has("referral")) {
+      u.searchParams.set("referral", "ecency");
+    }
+    return `${u.pathname}${u.search}`;
+  }, [url]);
+
   return (
-      <a
-          href={link}
-          className="ecency-renderer-hive-post-extension-link"
-          target="_blank"
-          rel="noopener"
-      >
-        {data ? (
-            <>
-              <div
-                  className="ecency-renderer-hive-post-extension-link-image"
-                  style={{ backgroundImage: `url(${data.image})` }}
-              />
-              <div className="ecency-renderer-hive-post-extension-link-text-content">
-                <div className="ecency-renderer-hive-post-extension-link-type">
-                  Hive post
-                </div>
-                <div className="ecency-renderer-hive-post-extension-link-title">
-                  {data.title}
-                </div>
-                <div className="ecency-renderer-hive-post-extension-link-description">
-                  {data.description + "..."}
-                </div>
-              </div>
-            </>
-        ) : (
-            link
-        )}
-      </a>
+    <a
+      href={enhancedHref}
+      className="ecency-renderer-hive-post-extension-link"
+      target="_blank"
+      rel="noopener"
+    >
+      {data ? (
+        <>
+          <div
+            className="ecency-renderer-hive-post-extension-link-image"
+            style={{ backgroundImage: `url(${data.image})` }}
+          />
+          <div className="ecency-renderer-hive-post-extension-link-text-content">
+            <div className="ecency-renderer-hive-post-extension-link-type">
+              Hive post
+            </div>
+            <div className="ecency-renderer-hive-post-extension-link-title">
+              {data.title}
+            </div>
+            <div className="ecency-renderer-hive-post-extension-link-description">
+              {data.description + "..."}
+            </div>
+          </div>
+        </>
+      ) : (
+        link
+      )}
+    </a>
   );
 }
 
@@ -130,18 +148,41 @@ export function HivePostLinkExtension({
     );
 
     elements
-        .filter((el) => !isWaveLikePost(el.getAttribute("href") ?? ""))
-        .filter((el) => {
-          try {
-            const [_, __, hrefAuthor, hrefPermlink] = new URL(
-                `https://ecency.com` + el.getAttribute("href")!
-            ).pathname.split("/");
-            return el.innerText === `${hrefAuthor}/${hrefPermlink}`;
-          } catch (e) {
-            return true;
+      .filter((el) => !isWaveLikePost(el.getAttribute("href") ?? ""))
+      .filter((el) => {
+        try {
+          const url = new URL(
+            el.getAttribute("href") ?? "",
+            "https://ecency.com"
+          );
+          if (url.hash.startsWith("#@")) {
+            return false; // comments
           }
-        })
-        .forEach((element) => {
+          if (isInvalidPermlinkLink(url.pathname)) {
+            return false;
+          }
+          const parts = url.pathname.split("/").filter(Boolean);
+          const hrefPermlink = parts.pop() ?? "";
+          const hrefAuthor = parts.pop() ?? "";
+          const isPost = hrefAuthor.startsWith("@") && !!hrefPermlink;
+          const remaining = parts.length;
+          const isCommunity =
+            remaining === 0 ||
+            (remaining === 1 && parts[0].startsWith("hive-"));
+          const text = el.innerText
+            .replace(/^https?:\/\/(www\.)?ecency\.com/i, "")
+            .split("?")[0]
+            .replace(/^\/+/, "");
+          return (
+            isPost &&
+            isCommunity &&
+            text.endsWith(`${hrefAuthor}/${hrefPermlink}`)
+          );
+        } catch {
+          return false;
+        }
+      })
+      .forEach((element) => {
           // Prevent multiple injections
           if ((element as HTMLElement).dataset.enhanced === "true") return;
           (element as HTMLElement).dataset.enhanced = "true";
