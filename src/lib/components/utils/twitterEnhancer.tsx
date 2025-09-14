@@ -14,7 +14,22 @@ export function applyTwitterEmbeds(
         )
     ).filter((el) => {
         const href = el.getAttribute("href") || "";
-        return href.startsWith("https://x.com") || href.startsWith("https://twitter.com");
+        if (!href.startsWith("https://x.com") && !href.startsWith("https://twitter.com")) {
+            return false;
+        }
+
+        try {
+            const url = new URL(href);
+            const parts = url.pathname.split("/").filter(Boolean);
+            // Must look like /{username}/status/{tweetId}[/*]
+            return (
+                parts.length >= 3 &&
+                parts[1] === "status" &&
+                /^\d+$/.test(parts[2])
+            );
+        } catch {
+            return false;
+        }
     });
 
     elements.forEach((el) => {
@@ -26,7 +41,8 @@ export function applyTwitterEmbeds(
             if (!href) return;
 
             const url = new URL(href);
-            const tweetId = url.pathname.split("/").pop();
+            const parts = url.pathname.split("/").filter(Boolean);
+            const tweetId = parts[2]; // safe because of filter check
             if (!tweetId) return;
 
             const wrapper = document.createElement("div");
