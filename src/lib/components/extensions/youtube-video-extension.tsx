@@ -4,6 +4,7 @@ import React, { RefObject, useCallback, useEffect, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
 import { clsx } from "clsx";
 import "./youtube-video-extension.scss";
+import { getYoutubeEmbedUrl } from "../utils/getYoutubeEmbedUrl";
 
 export function YoutubeVideoRenderer({
    embedSrc,
@@ -53,6 +54,10 @@ export function YoutubeVideoExtension({
       ) ?? [],
     );
     elements.forEach((element) => {
+      const embedSrc =
+        element.dataset.embedSrc ||
+        getYoutubeEmbedUrl(element.getAttribute("href") ?? "");
+      element.dataset.embedSrc = embedSrc;
       const container = document.createElement("div");
 
       container.classList.add("ecency-renderer-youtube-extension-frame");
@@ -60,10 +65,7 @@ export function YoutubeVideoExtension({
 
       hydrateRoot(
         container,
-        <YoutubeVideoRenderer
-          embedSrc={element.dataset.embedSrc ?? ""}
-          container={element}
-        />,
+        <YoutubeVideoRenderer embedSrc={embedSrc} container={element} />,
       );
       element.appendChild(container);
     });

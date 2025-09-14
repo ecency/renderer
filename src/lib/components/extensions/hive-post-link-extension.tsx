@@ -13,12 +13,12 @@ import { isWaveLikePost } from "../functions";
 
 // In-memory session cache
 const simpleCache = new Map<
-    string,
-    {
-      title: string;
-      description: string | undefined;
-      image: string | undefined;
-    }
+  string,
+  {
+    title: string;
+    description: string | undefined;
+    image: string | undefined;
+  }
 >();
 
 function isInvalidPermlinkLink(path: string): boolean {
@@ -35,7 +35,6 @@ function isInvalidPermlinkLink(path: string): boolean {
     return true;
   }
 }
-
 
 export function HivePostLinkRenderer({ link }: { link: string }) {
   const [data, setData] = useState<{
@@ -97,10 +96,8 @@ export function HivePostLinkRenderer({ link }: { link: string }) {
 
   const enhancedHref = useMemo(() => {
     const u = new URL(url.href);
-    if (!u.searchParams.has("referral")) {
-      u.searchParams.set("referral", "ecency");
-    }
-    return `${u.pathname}${u.search}`;
+    const referral = u.searchParams.get("referral");
+    return `${u.pathname}${referral ? `?referral=${referral}` : ""}${u.hash}`;
   }, [url]);
 
   return (
@@ -136,15 +133,15 @@ export function HivePostLinkRenderer({ link }: { link: string }) {
 }
 
 export function HivePostLinkExtension({
-    containerRef,
-  }: {
+  containerRef,
+}: {
   containerRef: RefObject<HTMLElement | null>;
 }) {
   useEffect(() => {
     const elements = Array.from(
-        containerRef.current?.querySelectorAll<HTMLElement>(
-            ".markdown-view:not(.markdown-view-pure) .markdown-post-link"
-        ) ?? []
+      containerRef.current?.querySelectorAll<HTMLElement>(
+        ".markdown-view:not(.markdown-view-pure) .markdown-post-link",
+      ) ?? [],
     );
 
     elements
@@ -153,7 +150,7 @@ export function HivePostLinkExtension({
         try {
           const url = new URL(
             el.getAttribute("href") ?? "",
-            "https://ecency.com"
+            "https://ecency.com",
           );
           if (url.hash.startsWith("#@")) {
             return false; // comments
@@ -183,19 +180,19 @@ export function HivePostLinkExtension({
         }
       })
       .forEach((element) => {
-          // Prevent multiple injections
-          if ((element as HTMLElement).dataset.enhanced === "true") return;
-          (element as HTMLElement).dataset.enhanced = "true";
+        // Prevent multiple injections
+        if ((element as HTMLElement).dataset.enhanced === "true") return;
+        (element as HTMLElement).dataset.enhanced = "true";
 
-          const container = document.createElement("div");
-          container.classList.add("ecency-renderer-hive-post-extension");
+        const container = document.createElement("div");
+        container.classList.add("ecency-renderer-hive-post-extension");
 
-          const href = element.getAttribute("href") ?? "";
-          const root = createRoot(container);
-          root.render(<HivePostLinkRenderer link={href} />);
+        const href = element.getAttribute("href") ?? "";
+        const root = createRoot(container);
+        root.render(<HivePostLinkRenderer link={href} />);
 
-          element.parentElement?.replaceChild(container, element);
-        });
+        element.parentElement?.replaceChild(container, element);
+      });
   }, []);
 
   return null;

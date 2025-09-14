@@ -1,5 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { YoutubeVideoRenderer } from "../extensions";
+import { getYoutubeEmbedUrl } from "./getYoutubeEmbedUrl";
 
 /**
  * DOM utility enhancer
@@ -15,7 +16,10 @@ export function applyYoutubeVideos(container: HTMLElement) {
         if (el.dataset.enhanced === "true") return;
         el.dataset.enhanced = "true";
 
-        const embedSrc = el.dataset.embedSrc ?? "";
+        const embedSrc =
+            el.dataset.embedSrc ||
+            getYoutubeEmbedUrl(el.getAttribute("href") ?? "");
+        el.dataset.embedSrc = embedSrc;
         const wrapper = document.createElement("div");
         wrapper.classList.add("ecency-renderer-youtube-extension-frame");
 

@@ -45,7 +45,6 @@ export function WaveLikePostRenderer({ link }: { link: string }) {
   return post ? (
     <a
       href={`/waves/${post.author}/${post.permlink}`}
-      target="_blank"
       className="ecency-renderer-wave-like-post-extension-renderer"
     >
       <div className="ecency-renderer-wave-like-post-extension-renderer--author">
@@ -58,7 +57,6 @@ export function WaveLikePostRenderer({ link }: { link: string }) {
           <a
             className="ecency-renderer-wave-like-post-extension-renderer--author-content-link"
             href={`/@${post.author}/posts`}
-            target="_blank"
           >
             @{post.author}
           </a>
@@ -68,7 +66,6 @@ export function WaveLikePostRenderer({ link }: { link: string }) {
         </div>
         <a
           href="https://ecency.com"
-          target="_blank"
           className="ecency-renderer-wave-like-post-extension-renderer--logo"
           dangerouslySetInnerHTML={{ __html: Logo }}
         />
