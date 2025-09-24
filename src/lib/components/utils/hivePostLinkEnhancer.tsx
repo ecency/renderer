@@ -1,15 +1,13 @@
 import { createRoot } from "react-dom/client";
 import { HivePostLinkRenderer } from "../extensions";
+import { findPostLinkElements, isWaveLikePost } from "../functions";
 
-export function applyHivePostLinks(container: HTMLElement) {
-    const elements = Array.from(
-        container.querySelectorAll<HTMLElement>(
-            ".markdown-view:not(.markdown-view-pure) .markdown-post-link"
-        )
-    );
-
-    elements
-        .filter((el) => el.dataset.isInline === "false")
+export function applyHivePostLinks(
+    container: HTMLElement,
+    postLinkElements: HTMLAnchorElement[] = findPostLinkElements(container),
+) {
+    postLinkElements
+        .filter((el) => !isWaveLikePost(el.getAttribute("href") ?? ""))
         .forEach((el) => {
         if (el.dataset.enhanced === "true") return;
         el.dataset.enhanced = "true";

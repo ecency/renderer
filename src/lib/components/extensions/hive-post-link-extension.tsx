@@ -9,7 +9,7 @@ import React, {
 } from "react";
 import { createRoot } from "react-dom/client";
 import "./hive-post-link-extension.scss";
-import { isWaveLikePost } from "../functions";
+import { findPostLinkElements, isWaveLikePost } from "../functions";
 
 // In-memory session cache
 const simpleCache = new Map<
@@ -138,13 +138,12 @@ export function HivePostLinkExtension({
   containerRef: RefObject<HTMLElement | null>;
 }) {
   useEffect(() => {
-    const elements = Array.from(
-      containerRef.current?.querySelectorAll<HTMLElement>(
-        ".markdown-view:not(.markdown-view-pure) .markdown-post-link",
-      ) ?? [],
-    );
+    const container = containerRef.current;
+    if (!container) {
+      return;
+    }
 
-    elements
+    findPostLinkElements(container)
       .filter((el) => !isWaveLikePost(el.getAttribute("href") ?? ""))
       .filter((el) => {
         try {
@@ -152,29 +151,7 @@ export function HivePostLinkExtension({
             el.getAttribute("href") ?? "",
             "https://ecency.com",
           );
-          if (url.hash.startsWith("#@")) {
-            return false; // comments
-          }
-          if (isInvalidPermlinkLink(url.pathname)) {
-            return false;
-          }
-          const parts = url.pathname.split("/").filter(Boolean);
-          const hrefPermlink = parts.pop() ?? "";
-          const hrefAuthor = parts.pop() ?? "";
-          const isPost = hrefAuthor.startsWith("@") && !!hrefPermlink;
-          const remaining = parts.length;
-          const isCommunity =
-            remaining === 0 ||
-            (remaining === 1 && parts[0].startsWith("hive-"));
-          const text = el.innerText
-            .replace(/^https?:\/\/(www\.)?ecency\.com/i, "")
-            .split("?")[0]
-            .replace(/^\/+/, "");
-          return (
-            isPost &&
-            isCommunity &&
-            text.endsWith(`${hrefAuthor}/${hrefPermlink}`)
-          );
+          return !isInvalidPermlinkLink(url.pathname);
         } catch {
           return false;
         }

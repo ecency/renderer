@@ -9,19 +9,22 @@ import {
     applyWaveLikePosts,
     applyTwitterEmbeds
 } from "../utils";
+import { findPostLinkElements } from "../functions";
 
 export function setupPostEnhancements(container: HTMLElement, options?: {
     onHiveOperationClick?: (op: string) => void,
     TwitterComponent?: any
 }) {
     applyImageZoom(container);
-    applyHivePostLinks(container);
+    const postLinkElements = findPostLinkElements(container);
+
+    applyHivePostLinks(container, postLinkElements);
     applyAuthorLinks(container);
     applyHiveOperations(container, options?.onHiveOperationClick);
     applyTagLinks(container);
     applyYoutubeVideos(container);
     applyThreeSpeakVideos(container);
-    applyWaveLikePosts(container);
+    applyWaveLikePosts(container, postLinkElements);
 
     applyTwitterEmbeds(container, options?.TwitterComponent ?? (() => `<div>Failed to render Twitter</div>`));
 }

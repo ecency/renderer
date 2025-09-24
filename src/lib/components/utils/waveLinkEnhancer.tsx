@@ -1,18 +1,17 @@
 import { createRoot } from "react-dom/client";
 import { WaveLikePostRenderer } from "../extensions";
-import { isWaveLikePost } from "../functions";
+import { findPostLinkElements, isWaveLikePost } from "../functions";
 
 /**
  * Progressive DOM enhancer for wave-like post links
  */
-export function applyWaveLikePosts(container: HTMLElement) {
-    const elements = Array.from(
-        container.querySelectorAll<HTMLElement>(
-            ".markdown-view:not(.markdown-view-pure) .markdown-post-link"
-        )
-    ).filter((el) => isWaveLikePost(el.getAttribute("href") ?? ""));
-
-    elements.forEach((el) => {
+export function applyWaveLikePosts(
+    container: HTMLElement,
+    postLinkElements: HTMLAnchorElement[] = findPostLinkElements(container),
+) {
+    postLinkElements
+        .filter((el) => isWaveLikePost(el.getAttribute("href") ?? ""))
+        .forEach((el) => {
         if (el.dataset.enhanced === "true") return;
         el.dataset.enhanced = "true";
 

@@ -2,7 +2,7 @@
 
 import React, { RefObject, useEffect, useMemo, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
-import { isWaveLikePost } from "../functions";
+import { findPostLinkElements, isWaveLikePost } from "../functions";
 import { getCachedPost } from "../../api";
 import { Entry } from "@ecency/render-helper/lib/types";
 import "./wave-like-post-extension.scss";
@@ -85,12 +85,12 @@ export function WaveLikePostExtension({
   containerRef: RefObject<HTMLElement | null>;
 }) {
   useEffect(() => {
-    const elements = Array.from(
-      containerRef.current?.querySelectorAll<HTMLElement>(
-        ".markdown-view:not(.markdown-view-pure) .markdown-post-link",
-      ) ?? [],
-    );
-    elements
+    const container = containerRef.current;
+    if (!container) {
+      return;
+    }
+
+    findPostLinkElements(container)
       .filter((el) => isWaveLikePost(el.getAttribute("href") ?? ""))
       .forEach((element) => {
         const container = document.createElement("div");
