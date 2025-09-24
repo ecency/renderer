@@ -79,10 +79,17 @@ export function findPostLinkElements(container: HTMLElement) {
 
       const normalizedDisplay = normalizeDisplayText(anchor.innerText);
       const normalizedTarget = `${author}/${permlink}`.toLowerCase();
+      const communitySegment =
+        pathParts.length === 1 ? decodeURIComponent(pathParts[0]).toLowerCase() : undefined;
+
+      const expectedDisplays = new Set([normalizedTarget]);
+      if (communitySegment) {
+        expectedDisplays.add(`${communitySegment}/${normalizedTarget}`);
+      }
 
       const matchesDisplay =
         anchor.innerText.trim() === rawHref.trim() ||
-        normalizedDisplay.endsWith(normalizedTarget);
+        expectedDisplays.has(normalizedDisplay);
 
       if (!matchesDisplay) {
         return false;
